@@ -1,0 +1,17 @@
+@apiURL = {{$dotenv PRODUCTS_API}}
+
+GET {{apiURL}}
+
+###
+
+GET {{apiURL}}/1001
+
+###
+
+POST {{apiURL}}/
+Content-Type: application/json
+
+{
+    "name": "Shoes",
+    "price": 69.9
+}

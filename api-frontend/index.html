@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h2>My public IP: <span id="ip"></span></h2>
+
+    <script>
+        (async function () {
+            const resp = await fetch('https://vm2208.kaj.pouta.csc.fi:8322/ip');
+            const ipData = await resp.json();
+            console.log(ipData);
+            document.querySelector('#ip').innerHTML = ipData.ip;
+
+        })();
+
+
+    </script>
+
+</body>
+</html>
