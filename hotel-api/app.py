@@ -51,12 +51,16 @@ def rooms_endpoint():
         'msg': f"Du har skapat ett nytt rum, id: {len(rooms)-1}!",
         }
     else:
-        return rooms
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM hotel_room ORDER BY room_number")
+            return cur.fetchall()
 
 @app.route("/rooms/<int:id>", methods=['GET', 'PUT', 'PATCH', 'DELETE'])
 def one_room(id):
     if request.method == 'GET':
-       return rooms [id]
+       with conn.cursor() as cur:
+            cur.execute("SELECT * FROM hotel_room WHERE id = %s", [id])
+            return cur.fetchone()
     
     if request.method == 'PUT' or request.method == 'PATCH':
         return {

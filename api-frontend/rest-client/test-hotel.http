@@ -6,6 +6,10 @@ GET {{apiURL}}/test
 
 GET {{apiURL}}/rooms
 
+###
+
+GET {{apiURL}}/rooms/2
+
 ### POST skapa nytt rum
 
 POST {{apiURL}}/rooms
