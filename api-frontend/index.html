@@ -3,21 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Hotellbokning</title>
 </head>
 <body>
     
-    <h2>My public IP: <span id="ip"></span></h2>
+    <h2>Hotellbokning <span id="ip"></span></h2>
+
+    <select id="room"></select>
+
+    <select id="guest">
+        <option value="1">John</option>
+        <option value="2">Jane</option>
+    </select>
+
+    Bokning startdatum: <input id="datefrom" type="date">
+
+    <input id="btnBook" type="button" value="Boka">
+
 
     <script>
-        (async function () {
-            const resp = await fetch('https://vm2208.kaj.pouta.csc.fi:8322/ip');
-            const ipData = await resp.json();
-            console.log(ipData);
-            document.querySelector('#ip').innerHTML = ipData.ip;
+    const API_URL = "https://vm2208.kaj.pouta.csc.fi:8322"
 
-        })();
+    async function getRooms() {
+       const resp = await fetch(`${API_URL}/rooms`);
+       const rooms = await resp.json()
 
+        let roomsHtml = "<option>-- Välj rum</option>"
+        for (room of rooms) {
+            roomsHtml += `
+            <option value="${room.id}">${room.room_number}</option>
+            `;
+        }
+        document.querySelector('#room').innerHTML = roomsHtml;
+
+    }
+    getRooms();
+
+    async function createBooking() {
+        // Detta ska POSTas ti ti /bookings
+        const booking = {
+            room: document.querySelector('#room').value,
+            guest: document.querySelector('#guest').value,
+            datefrom: document.querySelector('#datefrom').value
+
+        }
+        console.log(booking)
+        const resp = await fetch(`${API_URL}/bookings`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(booking)
+        })
+         const respData = await resp.json();
+
+         console.log(respData);
+    }
+
+    document.querySelector('#btnBook').addEventListener('click', createBooking);
 
     </script>
 

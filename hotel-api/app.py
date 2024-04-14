@@ -41,6 +41,15 @@ def dbtest():
 def ip():
     return { 'ip': request.remote_addr }
 
+@app.route("/bookings", methods=['GET', 'POST'])
+def bookings():
+    if request.method == 'POST':
+        request_body = request.get_json()
+        print(request_body)
+        return {
+            "msg": "APIn svarar!",
+            "request_body": request_body }
+
 @app.route("/rooms", methods=['GET', 'POST'])
 def rooms_endpoint():
     if request.method == 'POST':
