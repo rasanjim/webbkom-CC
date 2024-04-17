@@ -45,22 +45,36 @@ def ip():
 def bookings():
     if request.method == 'GET':
         with conn.cursor() as cur:
-            cur.execute("SELECT * FROM hotel_booking ORDER BY datefrom")
-            return cur.fetchall()
+            cur.execute("""
+                SELECT hb.*, hg.firstname AS guest_firstname, hr.room_number
+                FROM hotel_booking hb
+                INNER JOIN hotel_guest hg ON hb.guest_id = hg.id
+                INNER JOIN hotel_room hr ON hb.room_id = hr.id
+                ORDER BY hb.datefrom
+            """)
+            return (cur.fetchall())
         
     if request.method == 'POST':
-        request_body = request.get_json()
-        print(request_body)
-        return {
-            "msg": "APIn svarar!",
-            "request_body": request_body }
-    
+        body = request.get_json()
+        with conn.cursor() as cur:
+            cur.execute("""
+                INSERT INTO hotel_booking (room_id, guest_id, datefrom) 
+                VALUES (%s, %s, %s) RETURNING id
+            """, [body['room'], body['guest'], body['datefrom']])
+            result = cur.fetchone()
+            return ({ "msg": "Du har bokat ett rum", "result": result })
 
 @app.route("/guests", methods=['GET'])
 def guests_endpoint():
-   with conn.cursor() as cur:
-            cur.execute("SELECT * FROM hotel_guest ORDER BY firstname")
-            return cur.fetchall()
+    with conn.cursor() as cur:
+        cur.execute("""
+            SELECT hg.*, 
+                (SELECT COUNT(*) FROM hotel_booking WHERE guest_id = hg.id) AS num_visits
+            FROM hotel_guest hg
+            ORDER BY hg.firstname
+        """)
+        return (cur.fetchall())
+
 
 
 

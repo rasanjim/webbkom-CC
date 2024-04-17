@@ -43,7 +43,7 @@
        const resp = await fetch(`${API_URL}/guests`);
        const guests = await resp.json()
 
-        let roomsHtml = "<option>-- Välj gäst</option>"
+        let guestsHtml = "<option>-- Välj gäst</option>"
         for (guest of guests) {
             guestsHtml += `
             <option value="${guest.id}">${guest.firstname}</option>
@@ -70,7 +70,7 @@
     getBookings();
 
     async function createBooking() {
-        // Detta ska POSTas ti ti /bookings
+        // Detta ska POSTas ti /bookings
         const booking = {
             room: document.querySelector('#room').value,
             guest: document.querySelector('#guest').value,
@@ -84,7 +84,7 @@
             body: JSON.stringify(booking)
         })
          const respData = await resp.json();
-
+         getBookings();
          console.log(respData);
     }
 
