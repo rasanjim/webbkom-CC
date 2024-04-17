@@ -9,16 +9,16 @@
     
     <h2>Hotellbokning <span id="ip"></span></h2>
 
-    <select id="room"></select>
+    Rum: <select id="room"></select>
 
-    <select id="guest">
-        <option value="1">John</option>
-        <option value="2">Jane</option>
-    </select>
+    Gäst: <select id="guest">
+    </select> <br>
 
     Bokning startdatum: <input id="datefrom" type="date">
 
     <input id="btnBook" type="button" value="Boka">
+    <hr>
+    <ul id="bookings"></ul>
 
 
     <script>
@@ -38,6 +38,36 @@
 
     }
     getRooms();
+
+    async function getGuests() {
+       const resp = await fetch(`${API_URL}/guests`);
+       const guests = await resp.json()
+
+        let roomsHtml = "<option>-- Välj gäst</option>"
+        for (guest of guests) {
+            guestsHtml += `
+            <option value="${guest.id}">${guest.firstname}</option>
+            `;
+        }
+        document.querySelector('#guest').innerHTML = guestsHtml;
+
+    }
+    getGuests();
+
+    async function getBookings() {
+       const resp = await fetch(`${API_URL}/bookings`);
+       const bookings = await resp.json()
+
+        let bookingsHtml = ""
+        for (b of bookings) {
+            bookingsHtml += `
+            <li>${b.datefrom} Room: ${b.room_id} Guest: ${b.guest_id}</li
+            `;
+        }
+        document.querySelector('#bookings').innerHTML = bookingsHtml;
+
+    }
+    getBookings();
 
     async function createBooking() {
         // Detta ska POSTas ti ti /bookings

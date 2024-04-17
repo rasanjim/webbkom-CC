@@ -43,12 +43,26 @@ def ip():
 
 @app.route("/bookings", methods=['GET', 'POST'])
 def bookings():
+    if request.method == 'GET':
+        with conn.cursor() as cur:
+            cur.execute("SELECT * FROM hotel_booking ORDER BY datefrom")
+            return cur.fetchall()
+        
     if request.method == 'POST':
         request_body = request.get_json()
         print(request_body)
         return {
             "msg": "APIn svarar!",
             "request_body": request_body }
+    
+
+@app.route("/guests", methods=['GET'])
+def guests_endpoint():
+   with conn.cursor() as cur:
+            cur.execute("SELECT * FROM hotel_guest ORDER BY firstname")
+            return cur.fetchall()
+
+
 
 @app.route("/rooms", methods=['GET', 'POST'])
 def rooms_endpoint():
