@@ -7,7 +7,7 @@
 </head>
 <body>
     
-    <h2>Hotellbokning <span id="ip"></span></h2>
+    <h2>Hotellbokning, admin <span id="ip"></span></h2>
 
     Rum: <select id="room"></select>
 
@@ -61,7 +61,7 @@
         let bookingsHtml = ""
         for (b of bookings) {
             bookingsHtml += `
-            <li>${b.datefrom} Room: ${b.room_id} Guest: ${b.guest_id}</li
+            <li>${b.datefrom} Room: ${b.room_number} Guest: ${b.firstname}</li
             `;
         }
         document.querySelector('#bookings').innerHTML = bookingsHtml;

@@ -1,0 +1,35 @@
+@apiURL = {{$dotenv WEBBKOMM_API}}:8323
+@api_key = {{$dotenv HOTEL_API_KEY}}
+@api_key2 = {{$dotenv HOTEL_API_KEY2}}
+
+GET {{apiURL}}/guests
+
+###
+
+GET {{apiURL}}/rooms
+
+###
+
+GET {{apiURL}}/rooms/2
+
+### POST skapa nytt rum
+
+POST {{apiURL}}/rooms
+Content-Type: application/json
+
+{
+    "number": 406,
+    "type": "double"
+}
+
+###
+
+GET {{apiURL}}/bookings?api_key={{api_key}}
+
+###
+
+GET {{apiURL}}/bookings?api_key={{api_key2}}
+
+###
+
+POST {{apiURL}}/bookings
